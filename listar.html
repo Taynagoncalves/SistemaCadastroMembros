@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lista de Membros</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <button onclick="window.location.href='index.html'" class="btn btn-outline-primary w-100 mb-2">Cadastro de Membros</button>
+    <button id="btn-lista-membros" class="btn btn-primary w-100">Lista de Membros</button>
+  </div>
+
+  <div class="main">
+    <div id="lista">
+      <h1>Lista de Membros</h1>
+      <div class="d-flex mb-3">
+        <input type="text" id="pesquisa" placeholder="Buscar por nome..." oninput="listarMembros(this.value)" class="form-control me-2">
+        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exportarModal">
+          <i class="bi bi-download"></i> Exportar
+        </button>
+      </div>
+      <div id="lista-membros"></div>
+      <div class="pagination-container mt-3">
+        <div id="pagination-info" class="mb-2"></div>
+        <nav aria-label="Navegação de páginas">
+          <ul id="pagination" class="pagination justify-content-center"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exportarModal" tabindex="-1" aria-labelledby="exportarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exportarModalLabel">Exportar Lista de Membros</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Selecione o formato para exportação:</p>
+          <button type="button" id="exportar-pdf" class="btn btn-primary w-100 mb-2">
+            <i class="bi bi-file-pdf"></i> Exportar como PDF
+          </button>
+          <button type="button" id="exportar-excel" class="btn btn-success w-100">
+            <i class="bi bi-file-excel"></i> Exportar como Excel
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarModalLabel">Editar Membro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formularioEditar" class="row g-3">
+            <input type="hidden" id="editarId" name="id">
+            <div class="col-md-6">
+              <label for="editarNome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="editarNome" name="nome" required />
+            </div>
+            <div class="col-md-6">
+              <label for="editarDataNascimento" class="form-label">Data de Nascimento</label>
+              <input type="date" class="form-control" id="editarDataNascimento" name="data_nascimento" />
+            </div>
+            <div class="col-md-6">
+              <label for="editarTelefone" class="form-label">Telefone</label>
+              <input type="text" class="form-control" id="editarTelefone" name="telefone" />
+            </div>
+            <div class="col-md-6">
+              <label for="editarEndereco" class="form-label">Endereço</label>
+              <input type="text" class="form-control" id="editarEndereco" name="endereco" />
+            </div>
+            <div class="col-md-6">
+              <label for="editarCep" class="form-label">CEP</label>
+              <input type="text" class="form-control" id="editarCep" name="cep" />
+            </div>
+            <div class="col-md-6">
+              <label for="editarNumero" class="form-label">Número</label>
+              <input type="text" class="form-control" id="editarNumero" name="numero" />
+            </div>
+            <div class="col-md-6">
+              <label for="editarBairro" class="form-label">Bairro</label>
+              <input type="text" class="form-control" id="editarBairro" name="bairro" />
+            </div>
+            <div class="col-md-6">
+              <label for="editarSexo" class="form-label">Sexo</label>
+              <select class="form-select" id="editarSexo" name="sexo">
+                <option value="">Selecione</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="editarBatizado" class="form-label">Batizado(a)</label>
+              <select class="form-select" id="editarBatizado" name="batizado">
+                <option value="">Selecione</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="editarMusico" class="form-label">Músico</label>
+              <select class="form-select" id="editarMusico" name="musico" onchange="exibirInstrumentosEditar(this.value)">
+                <option value="">Selecione</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+            </div>
+            <div class="col-md-6" id="editarInstrumentoContainer" style="display: none;">
+              <label for="editarInstrumento" class="form-label">Instrumento</label>
+              <select class="form-select" id="editarInstrumento" name="instrumento">
+                <option value="">Selecione</option>
+                <option value="1">Violino</option>
+                <option value="2">Viola</option>
+                <option value="3">Violoncelo</option>
+                <option value="4">Flauta</option>
+                <option value="5">Clarinete</option>
+                <option value="6">Saxofone Alto</option>
+                <option value="7">Saxofone Tenor</option>
+                <option value="8">Saxofone Barítono</option>
+                <option value="9">Fagote</option>
+                <option value="10">Bombardino</option>
+                <option value="11">Bombardão</option>
+                <option value="12">Tuba</option>
+                <option value="13">Trombone</option>
+                <option value="14">Trompete</option>
+              </select>
+            </div>
+            <div class="col-md-6" id="editarMusicoAtuacao" style="display: none;">
+              <label for="editarAtuacao" class="form-label">Atuação</label>
+              <select class="form-select" id="editarAtuacao" name="atuacao">
+                <option value="">Selecione</option>
+                <option value="1">Oficializado</option>
+                <option value="2">Ensaios</option>
+                <option value="3">Reunião de Jovens</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="editarOrganista" class="form-label">Organista</label>
+              <select class="form-select" id="editarOrganista" name="organista">
+                <option value="">Selecione</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="editarCargo" class="form-label">Cargo Ministerial</label>
+              <select class="form-select" id="editarCargo" name="cargo">
+                <option value="">Selecione</option>
+                <option value="1">Auxiliar Administração</option>
+                <option value="2">Auxiliar Das Portas</option>
+                <option value="3">Auxiliar de Jovens</option>
+                <option value="4">Brigadista</option>
+                <option value="5">Limpeza</option>
+                <option value="6">Manutenção Preventiva</option>
+                <option value="7">Operador do Som</option>
+                <option value="8">Piedade</option>
+                <option value="9">Porteiro</option>
+                <option value="10">Porteira</option>
+                <option value="11">Preventiva</option>
+                <option value="12">Cooperador de Jovens</option>
+                <option value="13">Cooperador Oficial</option>
+                <option value="14">Diácono</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="salvarEdicao()">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="excluirModal" tabindex="-1" aria-labelledby="excluirModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="excluirModalLabel">Confirmar Exclusão</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir o membro <strong id="excluirNome"></strong>?</p>
+          <input type="hidden" id="excluirId">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" onclick="excluirMembro()">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="listar.js?=0.6"></script>
+  <script src="export.js"></script>
+</body>
+</html>

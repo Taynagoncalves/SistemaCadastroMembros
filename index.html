@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Membros</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <button class="btn btn-primary w-100 mb-2">Cadastro de Membros</button>
+    <button onclick="window.location.href='listar.html'" class="btn btn-outline-primary w-100">Lista de Membros</button>
+  </div>
+
+  <div class="main">
+    <div id="cadastro">
+      <h1>Cadastro de Membros</h1>
+      <form id="formulario" class="row g-3">
+        <div class="col-md-6">
+          <label for="nome" class="form-label">Nome</label>
+          <input type="text" class="form-control" id="nome" name="nome" required />
+        </div>
+        <div class="col-md-6">
+          <label for="data_nascimento" class="form-label">Data de Nascimento</label>
+          <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" />
+        </div>
+        <div class="col-md-6">
+          <label for="telefone" class="form-label">Telefone</label>
+          <input type="text" class="form-control" id="telefone" name="telefone" />
+        </div>
+        <div class="col-md-6">
+          <label for="endereco" class="form-label">Endereço</label>
+          <input type="text" class="form-control" id="endereco" name="endereco" />
+        </div>
+        <div class="col-md-6">
+          <label for="cep" class="form-label">CEP</label>
+          <input type="text" class="form-control" id="cep" name="cep" />
+        </div>
+        <div class="col-md-6">
+          <label for="numero" class="form-label">Número</label>
+          <input type="text" class="form-control" id="numero" name="numero" />
+        </div>
+        <div class="col-md-6">
+          <label for="bairro" class="form-label">Bairro</label>
+          <input type="text" class="form-control" id="bairro" name="bairro" />
+        </div>
+        <div class="col-md-6">
+          <label for="sexo" class="form-label">Sexo</label>
+          <select class="form-select" id="sexo" name="sexo">
+            <option value="">Selecione</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="batizado" class="form-label">Batizado(a)</label>
+          <select class="form-select" id="batizado" name="batizado">
+            <option value="">Selecione</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="musico" class="form-label">Músico</label>
+          <select class="form-select" id="musico" name="musico" onchange="exibirInstrumentos(this.value)">
+            <option value="">Selecione</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+        </div>
+        <div class="col-md-6" id="instrumentoContainer" style="display: none;">
+          <label for="instrumento" class="form-label">Instrumento</label>
+          <select class="form-select" id="instrumento" name="instrumento">
+            <option value="">Selecione</option>
+            <option value="1">Violino</option>
+            <option value="2">Viola</option>
+            <option value="3">Violoncelo</option>
+            <option value="4">Flauta</option>
+            <option value="5">Clarinete</option>
+            <option value="6">Saxofone Alto</option>
+            <option value="7">Saxofone Tenor</option>
+            <option value="8">Saxofone Barítono</option>
+            <option value="9">Fagote</option>
+            <option value="10">Bombardino</option>
+            <option value="11">Bombardão</option>
+            <option value="12">Tuba</option>
+            <option value="13">Trombone</option>
+            <option value="14">Trompete</option>
+          </select>
+        </div>
+        <div class="col-md-6" id="musicoAtuacao" style="display: none;">
+          <label for="atuacao" class="form-label">Atuação</label>
+          <select class="form-select" id="atuacao" name="atuacao">
+            <option value="">Selecione</option>
+            <option value="1">Oficializado</option>
+            <option value="2">Ensaios</option>
+            <option value="3">Reunião de Jovens</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="organista" class="form-label">Organista</label>
+          <select class="form-select" id="organista" name="organista">
+            <option value="">Selecione</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="cargo" class="form-label">Cargo Ministerial</label>
+          <select class="form-select" id="cargo" name="cargo">
+            <option value="">Selecione</option>
+            <option value="1">Auxiliar Administração</option>
+            <option value="2">Auxiliar Das Portas</option>
+            <option value="3">Auxiliar de Jovens</option>
+            <option value="4">Brigadista</option>
+            <option value="5">Limpeza</option>
+            <option value="6">Manutenção Preventiva</option>
+            <option value="7">Operador do Som</option>
+            <option value="8">Piedade</option>
+            <option value="9">Porteiro</option>
+            <option value="10">Porteira</option>
+            <option value="11">Preventiva</option>
+            <option value="12">Cooperador de Jovens</option>
+            <option value="13">Cooperador Oficial</option>
+            <option value="14">Diácono</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="script.js"></script>
+</body>
+</html>
